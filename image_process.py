@@ -309,7 +309,7 @@ if mode == modes[1] :
     if face=="Run Video" and not use_webcam:
         sf.video(tfile.name)
 
-    if face == "Face Mesh":
+    if face == "Face Mesh" or face =="Face Detector":
         
         # Record the video
         record = sempty.checkbox("Record")
@@ -358,14 +358,16 @@ if mode == modes[1] :
                 frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
                 face_count = 0
-                if result.multi_face_landmarks:
-                    
-                    for facelms in result.multi_face_landmarks:
-                        mp_drawing.draw_landmarks(frame, facelms, mp_face_mesh.FACE_CONNECTIONS, draw_spec1, draw_spec2)
-                        face_count += 1
 
-                if record:
-                    out.write(frame)
+                if face == "Face Mesh":
+                    if result.multi_face_landmarks:
+                        
+                        for facelms in result.multi_face_landmarks:
+                            mp_drawing.draw_landmarks(frame, facelms, mp_face_mesh.FACE_CONNECTIONS, draw_spec1, draw_spec2)
+                            face_count += 1
+
+                    if record:
+                        out.write(frame)
                 cTime = time.time()
                 fps = int(1/(cTime-pTime))
                 k1.markdown(f"<h1 style = 'text-align:center; color:red'>{int(fps)}<h1/>", unsafe_allow_html=True)
